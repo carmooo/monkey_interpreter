@@ -3,8 +3,8 @@ package repl
 import (
 	"bufio"
 	"fmt"
-	"github.com/carmooo/go_interpreter/lexer"
-	"github.com/carmooo/go_interpreter/token"
+	"github.com/carmooo/monkey_interpreter/lexer"
+	"github.com/carmooo/monkey_interpreter/token"
 	"io"
 )
 

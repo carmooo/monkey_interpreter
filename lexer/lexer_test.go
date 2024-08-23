@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"github.com/carmooo/go_interpreter/token"
+	"github.com/carmooo/monkey_interpreter/token"
 	"testing"
 )
 

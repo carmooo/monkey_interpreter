@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/carmooo/go_interpreter/repl"
+	"github.com/carmooo/monkey_interpreter/repl"
 	"os"
 	"os/user"
 )

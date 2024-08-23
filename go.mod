@@ -1,3 +1,3 @@
-module github.com/carmooo/go_interpreter
+module github.com/carmooo/monkey_interpreter
 
 go 1.21.4
