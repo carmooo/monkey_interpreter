@@ -14,6 +14,8 @@ func TestEvalIntegerExpression(t *testing.T) {
 	}{
 		{"5", 5},
 		{"10", 10},
+		{"-5", -5},
+		{"-10", -10},
 	}
 
 	for _, tt := range tests {
@@ -72,7 +74,7 @@ func testEval(input string) object.Object {
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	result, ok := obj.(*object.Integer)
 	if !ok {
-		t.Errorf("object is not Integet. got=%T (%+v)", obj, obj)
+		t.Errorf("object is not Integer. got=%T (%+v)", obj, obj)
 		return false
 	}
 
