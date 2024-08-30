@@ -37,6 +37,29 @@ func TestEvalBooleanExpression(t *testing.T) {
 	}
 }
 
+// the two tests that follow are for prefix operators.
+// during parsing we treated a lot of constructs as prefix expressions for convenience
+// here prefix expressions are just expressions with one operator and one operand
+
+func TestBangOperator(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected bool
+	}{
+		{"!true", false},
+		{"!false", true},
+		{"!5", false},
+		{"!!true", true},
+		{"!!false", false},
+		{"!!5", true},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		testBooleanObject(t, evaluated, tt.expected)
+	}
+}
+
 func testEval(input string) object.Object {
 	l := lexer.New(input)
 	p := parser.New(l)
