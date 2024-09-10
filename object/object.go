@@ -10,12 +10,14 @@ import (
 type ObjectType string
 
 const (
-	INTEGER_OBJ         = "INTEGER"
-	BOOLEAN_OBJ         = "BOOLEAN"
+	INTEGER_OBJECT      = "INTEGER"
+	BOOLEAN_OBJECT      = "BOOLEAN"
 	NULL_OBJECT         = "NULL"
 	RETURN_VALUE_OBJECT = "RETURN_VALUE"
 	ERROR_OBJECT        = "ERROR"
 	FUNCTION_OBJECT     = "FUNCTION"
+	STRING_OBJECT       = "STRING"
+	BUILTIN_OBJECT      = "BUILTIN"
 )
 
 type Object interface {
@@ -27,14 +29,14 @@ type Integer struct {
 	Value int64
 }
 
-func (i *Integer) Type() ObjectType { return INTEGER_OBJ }
+func (i *Integer) Type() ObjectType { return INTEGER_OBJECT }
 func (i *Integer) Inspect() string  { return fmt.Sprintf("%d", i.Value) }
 
 type Boolean struct {
 	Value bool
 }
 
-func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
+func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJECT }
 func (b *Boolean) Inspect() string  { return fmt.Sprintf("%t", b.Value) }
 
 type Null struct{}
@@ -79,3 +81,10 @@ func (f *Function) Inspect() string {
 
 	return out.String()
 }
+
+type String struct {
+	Value string
+}
+
+func (s *String) Type() ObjectType { return STRING_OBJECT }
+func (s *String) Inspect() string  { return s.Value }

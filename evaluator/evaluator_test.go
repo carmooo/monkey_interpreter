@@ -188,6 +188,10 @@ if (10 > 1) {
 			"foobar",
 			"identifier not found: foobar",
 		},
+		{
+			`"Hello" - "World"`,
+			"unknown operator: STRING - STRING",
+		},
 	}
 
 	for _, tt := range tests {
@@ -271,6 +275,37 @@ func TestClosures(t *testing.T) {
    let addTwo = newAdder(2);
    addTwo(2);`
 	testIntegerObject(t, testEval(input), 4)
+}
+
+func TestStringLiterals(t *testing.T) {
+	input := `"Hello World!"`
+
+	evaluation := testEval(input)
+
+	str, ok := evaluation.(*object.String)
+	if !ok {
+		t.Fatalf("object is not String. got=%T (%+v)", evaluation, evaluation)
+	}
+
+	expectedValue := "Hello World!"
+	if str.Value != expectedValue {
+		t.Fatalf("value is not %q. got=%q", expectedValue, str.Value)
+	}
+}
+
+func TestStringConcatenation(t *testing.T) {
+	input := `"Hello" + " " + "World!"`
+	evaluation := testEval(input)
+
+	str, ok := evaluation.(*object.String)
+	if !ok {
+		t.Fatalf("object is not String. got=%T (%+v)", evaluation, evaluation)
+	}
+
+	expectedValue := "Hello World!"
+	if str.Value != expectedValue {
+		t.Fatalf("value is not %q. got=%q", expectedValue, str.Value)
+	}
 }
 
 func testEval(input string) object.Object {
