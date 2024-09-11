@@ -80,6 +80,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return elements[0]
 		}
 		return &object.Array{Elements: elements}
+	case *ast.IndexExpression:
+		return evalIndexExpression(node, env)
 	default:
 		return nil
 	}
@@ -247,6 +249,34 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 	}
 
 	return newError("identifier not found: " + node.Value)
+}
+
+func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) object.Object {
+	array := Eval(node.Left, env)
+	if isError(array) {
+		return array
+	}
+
+	index := Eval(node.Index, env)
+	if isError(index) {
+		return index
+	}
+
+	arrayObject, ok := array.(*object.Array)
+	if !ok {
+		return newError("object is not indexable")
+	}
+
+	idxObject, ok := index.(*object.Integer)
+	if !ok {
+		return newError("index is not integer")
+	}
+
+	if idxObject.Value < 0 || idxObject.Value >= int64(len(arrayObject.Elements)) {
+		return NULL
+	}
+
+	return arrayObject.Elements[idxObject.Value]
 }
 
 func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Object {
