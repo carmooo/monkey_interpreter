@@ -252,9 +252,9 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 }
 
 func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) object.Object {
-	array := Eval(node.Left, env)
-	if isError(array) {
-		return array
+	left := Eval(node.Left, env)
+	if isError(left) {
+		return left
 	}
 
 	index := Eval(node.Index, env)
@@ -262,7 +262,16 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
 		return index
 	}
 
-	arrayObject, ok := array.(*object.Array)
+	switch {
+	case left.Type() == object.ARRAY_OBJECT && index.Type() == object.INTEGER_OBJECT:
+		return evalArrayIndexExpression(left, index)
+	default:
+		return newError("index operator not supported: %s", left.Type())
+	}
+}
+
+func evalArrayIndexExpression(left, index object.Object) object.Object {
+	arrayObject, ok := left.(*object.Array)
 	if !ok {
 		return newError("object is not indexable")
 	}
