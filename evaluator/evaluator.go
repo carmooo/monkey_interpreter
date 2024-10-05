@@ -360,7 +360,10 @@ func applyFunction(fn object.Object, arguments []object.Object) object.Object {
 		evaluated := Eval(function.Body, extendEnv)
 		return unwrapReturnValue(evaluated)
 	case *object.Builtin:
-		return function.Fn(arguments...)
+		if result := function.Fn(arguments...); result != nil {
+			return function.Fn(arguments...)
+		}
+		return NULL
 	default:
 		return newError("not a function. got=%s", fn.Type())
 	}
