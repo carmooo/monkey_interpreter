@@ -95,6 +95,7 @@ var Builtins = []struct {
 				if length > 0 {
 					newElements := make([]Object, length-1)
 					copy(newElements, arr.Elements[1:length])
+					return &Array{Elements: newElements}
 				}
 
 				return nil
